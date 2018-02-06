@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const socketIO = require('socket.io');
+const {generateMessage} = require('./utils/message.js');
 
 var app = express();
 var server = http.createServer(app);
@@ -14,17 +15,9 @@ app.use(express.static(pathjoin));
 io.on('connection',(socket)=>{
     console.log('new user connected');
 
-    socket.emit('newmessage',{
-        from:'admin',
-        text:'welcome to chat app',
-        createdAt: new Date().getTime()
-    });
+    socket.emit('newmessage',generateMessage('admin','Welcome to chat app'));
 
-    socket.broadcast.emit('newmessage',{
-        from:'admin',
-        text:'new user joined',
-        createdAt: new Date().getTime()
-    });
+    socket.broadcast.emit('newmessage',generateMessage('admin','new user comnnected'));
 
    
 
